@@ -42,23 +42,6 @@ output "aws_load_balancer_controller_role_arn" {
 # If you decide to deploy to a different namespace, you also need to create an 
 # AWS Fargate profile for that namespace.
 
-# Create another fargate profile for all our applications that will run in the application namesoace
-resource "aws_eks_fargate_profile" "alb-controller" {
-  cluster_name           = aws_eks_cluster.cluster.name
-  fargate_profile_name   = "aws-load-balancer-controller"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
-
-  # These subnets must have the following resource tag: 
-  # kubernetes.io/cluster/<CLUSTER_NAME>.
-  subnet_ids = [
-    aws_subnet.private-us-east-1a.id,
-    aws_subnet.private-us-east-1b.id
-  ]
-
-  selector {
-    namespace = "aws-load-balancer-controller"
-  }
-}
 
 
 # we need to deploy controller to Kubernetes using Helm
@@ -96,22 +79,11 @@ resource "helm_release" "aws-load-balancer-controller" {
     value = aws_iam_role.aws_load_balancer_controller.arn
   }
 
-  # EKS Fargate specific
-  set {
-    name  = "region"
-    value = "us-east-1"
-  }
-
-  set {
-    name  = "vpcId"
-    value = aws_vpc.main.id
-  }
-
   depends_on = [
-    aws_eks_fargate_profile.kube-system,
-    aws_eks_fargate_profile.alb-controller
+    kubernetes_namespace.aws_load_balancer_controller
   ]
 }
+
 
 # # Create service account for alb controller
 
@@ -119,7 +91,7 @@ resource "kubernetes_service_account" "alb-controller" {
   automount_service_account_token = true
   metadata {
     name      = "aws-load-balancer-controller"
-    namespace = "aws-load-balancer-controller"
+    namespace = "kube-system"
     annotations = {
       # This annotation is only used when running on EKS which can
       # use IAM roles for service accounts.

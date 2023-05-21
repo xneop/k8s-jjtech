@@ -51,6 +51,7 @@ metadata:
   namespace: application
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/success-codes: 200,302
     alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
   labels:
@@ -66,3 +67,4 @@ spec:
             name: app-service
             port:
               number: 80
+
