@@ -82,3 +82,25 @@ kubectl patch deployment coredns \
 
 4. STart Minikube by running 
 - minikube start
+
+
+## Install Minikube on Windows
+
+### What you’ll need
+- 2 CPUs or more
+- 2GB of free memory
+- 20GB of free disk space
+- Internet connection
+- Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, KVM, Parallels, Podman, VirtualBox, or VMware Fusion/Workstation
+
+To install the latest minikube stable release on x86-64 Windows using Chocolatey:
+
+1. If the Chocolatey Package Manager is installed, use the following command:
+- choco install minikube
+
+2. From a terminal with administrator access (but not logged in as root), run:
+
+- minikube start
+
+3. STart intercating with your cluster by running 
+- kubectl get po
