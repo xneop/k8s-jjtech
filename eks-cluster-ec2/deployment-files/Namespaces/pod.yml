@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: jjtech-pod
-  namespace: application
+  name: "my-app"
+  namespace: jjtech-project
   labels:
-    app: myapp
-    run: nginx
+    app: "my-app"
 spec:
   containers:
-  - name: myapp
-    image: nginx
+  - name: my-app
+    image: "nginx"
     resources:
       limits:
         cpu: 200m
