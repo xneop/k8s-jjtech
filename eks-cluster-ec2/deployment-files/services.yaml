@@ -5,11 +5,12 @@ metadata:
   name: app-service
   namespace: application
 spec:
-  type: "NodePort"
+  type: "LoadBalancer"
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 32005
+      # nodePort: 32005
       protocol: TCP
   selector:
-    run: app
+    app: myapp
+    run: nginx

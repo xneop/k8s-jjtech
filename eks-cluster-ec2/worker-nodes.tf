@@ -47,7 +47,7 @@ resource "aws_eks_node_group" "eks_node_group" {
     min_size     = 2
   }
 
-  instance_types = ["t2.micro"]
+  instance_types = ["t2.medium"]
 
   depends_on = [
     aws_eks_cluster.cluster
