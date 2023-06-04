@@ -36,13 +36,13 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: deekshithsn/k8s-deployment-strategies
+        image: adamtravis/rollouts:blue   #deekshithsn/k8s-deployment-strategies
         ports:
         - name: http
           containerPort: 8080
-        env:
-        - name: VERSION
-          value: v1.0.0
+        # env:
+        # - name: VERSION
+        #   value: v1.0.0
         resources:
           requests:
             cpu: 100m
