@@ -32,6 +32,7 @@
 
 * After you provision the EKS with terraform, you would need to update your Kubernetes context to access the cluster with the following command - **aws eks update-kubeconfig --name name-of-cluster --region region-where-cluster-is-deployed**
 
+
 * To patch coredns to run on fargate nodes, run the command below 
 
 ****

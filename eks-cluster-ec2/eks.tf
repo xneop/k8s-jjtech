@@ -2,6 +2,33 @@
 # This control plane can be used to attach self-managed, 
 # and aws managed nodes as well as you can create Fargate profiles.
 
+resource "aws_security_group" "jjtech_cluster" {
+  name        = "jjtech-cluster-sg"
+  description = "Cluster communication with worker nodes"
+  vpc_id      = aws_vpc.main.id
+
+  dynamic "ingress" {
+    for_each = var.ingress_ports
+    iterator = ports
+    content {
+      from_port   = ports.value
+      to_port     = ports.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+
+    }
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+}
+
+
 # First of all, let's create an IAM role for EKS. It will use it to make API calls to AWS services, 
 # for example, to create managed node pools.
 
@@ -42,15 +69,14 @@ resource "aws_eks_cluster" "cluster" {
   role_arn = aws_iam_role.eks-cluster.arn
 
   vpc_config {
-
-
+    security_group_ids      = [aws_security_group.jjtech_cluster.id]
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
 
     subnet_ids = [
-      # aws_subnet.private-us-east-1a.id,
-      # aws_subnet.private-us-east-1b.id,
+      aws_subnet.private-us-east-1a.id,
+      aws_subnet.private-us-east-1b.id,
       aws_subnet.public-us-east-1a.id,
       aws_subnet.public-us-east-1b.id
     ]

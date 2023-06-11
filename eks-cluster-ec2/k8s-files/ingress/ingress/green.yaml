@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: green-service
+  labels:
+    app: green-app
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  # Note here that we match both the app and the version
+  selector:
+    app: green-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: green-app
+  labels:
+    app: green-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: green-app
+  template:
+    metadata:
+      labels:
+        app: green-app
+    spec:
+      containers:
+      - name: my-green-app
+        image: adamtravis/rollouts:green 
+        ports:
+        - name: http
+          containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        
