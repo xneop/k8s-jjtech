@@ -55,7 +55,7 @@ resource "helm_release" "aws_load_balancer_controller" {
 # Resource: Kubernetes Ingress Class
 
 resource "kubernetes_ingress_class_v1" "ingress_class_default" {
-  depends_on = [helm_release.aws-load-balancer-controller]
+  depends_on = [module.aws_load_balancer_controller_irsa_role]
   metadata {
     name = "my-aws-ingress-class"
     annotations = {

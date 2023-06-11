@@ -35,7 +35,7 @@ spec:
 apiVersion: apps/v1
 kind:  Deployment
 metadata:
-  name: hello
+  name: hello-V1
   labels:
     app: hello
 spec:
@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-svc
+  name: hello-V2-svc
   labels: 
     app: hello
 spec:
@@ -84,7 +84,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: hello-svc
+              name: hello-V1-svc
               port:
                 number: 8080
         - path: /hello-v2
